@@ -3,13 +3,13 @@ import matplotlib
 import pathlib
 from utils import read_im, save_im
 import numpy as np
-matplotlib.use('Qt5Cairo')
+
+
 output_dir = pathlib.Path("image_solutions")
 output_dir.mkdir(exist_ok=True)
 
 
 im = read_im(pathlib.Path("images", ".\\lake.jpg"))
-plt.imshow(im)
 
 
 def greyscale(im):
@@ -28,8 +28,15 @@ def greyscale(im):
 
 
 im_greyscale = greyscale(im)
+fig0, ax0 = plt.subplots(1, 2)
+ax0[0].imshow(im)
+ax0[0].set_title('color image')
+ax0[1].imshow(im_greyscale, cmap="gray")
+ax0[1].set_title('grayscale image')
+fig0.tight_layout()
+fig0.savefig(pathlib.Path('image_solutions', 'task2a.png'))
+
 save_im(output_dir.joinpath("lake_greyscale.jpg"), im_greyscale, cmap="gray")
-plt.imshow(im_greyscale, cmap="gray")
 
 
 def inverse(im):
@@ -46,5 +53,20 @@ def inverse(im):
     im = 1 - im
     return im.astype(dtype)
 
+
+im_inv = inverse(im)
+im_greyscale_inv = inverse(im_greyscale)
+
+fig1, ax1 = plt.subplots(2, 2)
+ax1[0, 0].imshow(im)
+ax1[0, 0].set_title('color image')
+ax1[0, 1].imshow(im_inv)
+ax1[0, 1].set_title('color image inverted')
+ax1[1, 0].imshow(im_greyscale, cmap="gray")
+ax1[1, 0].set_title('grayscale image')
+ax1[1, 1].imshow(im_greyscale_inv, cmap="gray")
+ax1[1, 1].set_title('grayscale image inverted')
+fig1.tight_layout()
+fig1.savefig(pathlib.Path('image_solutions', 'task2b.png'))
 
 plt.show()
